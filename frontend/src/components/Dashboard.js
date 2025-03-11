@@ -313,51 +313,55 @@
 //     </div>
 //   );
 // };
+import React, { useEffect, useState } from "react";
+import Sidebar from "./Sidebar";
+import Header from "./Header";
+import ExerciseTracker from "./ExerciseTracker";
+import MealSection from "./MealSection";
+import WaterIntakeTracker from "./WaterIntakeTracker";
+import SleepTracker from "./SleepTracker";
+import BmiCalculator from "./BmiCalculator";
+import ProgressChart from "./ProgressChart";
+import { getUserProfile } from "../api";
 
-
-
-
-// export default Dashboard;
-
-
-import React, { useState } from "react";
-import TrackerCard from "../components/TrackerCard";
-import MealSection from "../components/MealSection";
-import ActivityLogSection from "../components/ActivityLogSection";
-import ProfileSection from "../components/ProfileSection";
-import SettingsSection from "../components/SettingsSection";
-import BmiCalculator from "../components/BmiCalculator";
-import ExerciseTracker from "../components/ExerciseTracker";
-import FitnessCalendar from "../components/Calendar";
-import WaterIntakeTracker from "../components/WaterIntakeTracker";
-import SleepTracker from "../components/SleepTracker";
+const mockData = [
+  { date: "Day 1", value: 200 },
+  { date: "Day 2", value: 400 },
+  { date: "Day 3", value: 350 },
+  { date: "Day 4", value: 500 },
+];
 
 const Dashboard = () => {
-  const [bmi, setBmi] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(new Date()); // Fix added
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        const { data } = await getUserProfile(token);
+        setUser(data);
+      }
+    };
+    fetchUser();
+  }, []);
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <header className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Welcome to Fitness Tracker</h1>
-      </header>
-
-      <div className="grid grid-cols-3 gap-4">
-        <TrackerCard title="Calories Burned" value="5490 cal" color="bg-blue-100" />
-        <WaterIntakeTracker />
-        <SleepTracker />
+    <div className="flex h-screen bg-gray-100">
+      <Sidebar />
+      <div className="flex-1 p-6">
+        <Header title={`Welcome, ${user ? user.name : "User"}!`} />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <ExerciseTracker />
+          <MealSection />
+          <WaterIntakeTracker />
+          <SleepTracker />
+          <BmiCalculator />
+          <div className="p-6">
+            <h1 className="text-2xl font-bold">Dashboard</h1>
+            <ProgressChart data={mockData} title="Weight Progress" />
+          </div>
+        </div>
       </div>
-
-      <BmiCalculator onResult={setBmi} />
-      {bmi && <ExerciseTracker bmi={bmi} />}
-
-      <FitnessCalendar onDateChange={setSelectedDate} />
-
-      <MealSection title="Today's Meals" meals={[{ mealType: "Breakfast", mealDetails: "Oatmeal & Banana" }]} />
-      <ActivityLogSection logs={[{ time: "8:00 AM", activity: "Morning Run" }]} />
-
-      <ProfileSection user={{ name: "User", email: "user@example.com", avatar: "https://via.placeholder.com/150" }} />
-      <SettingsSection settings={{ calorieGoal: 2000, waterGoal: 6 }} onChange={() => {}} />
     </div>
   );
 };

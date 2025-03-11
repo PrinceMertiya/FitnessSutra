@@ -1,19 +1,34 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Home, Settings, User, LogOut } from "lucide-react";
 
 const Sidebar = () => {
   return (
-    <div className="w-64 bg-blue-700 text-white h-screen p-4">
-      <h2 className="text-xl font-bold mb-6">FitnessSutra</h2>
+    <div className="w-64 bg-blue-800 h-screen p-6 text-white">
+      <h2 className="text-2xl font-bold mb-6">Fitness Tracker</h2>
       <ul>
         <li className="mb-4">
-          <Link to="/" className="block p-2 hover:bg-blue-500 rounded">Dashboard</Link>
+          <Link to="/dashboard" className="flex items-center space-x-2">
+            <Home size={20} /> <span>Dashboard</span>
+          </Link>
         </li>
         <li className="mb-4">
-          <Link to="/login" className="block p-2 hover:bg-blue-500 rounded">Login</Link>
+          <Link to="/profile" className="flex items-center space-x-2">
+            <User size={20} /> <span>Profile</span>
+          </Link>
         </li>
         <li className="mb-4">
-          <Link to="/register" className="block p-2 hover:bg-blue-500 rounded">Register</Link>
+          <Link to="/settings" className="flex items-center space-x-2">
+            <Settings size={20} /> <span>Settings</span>
+          </Link>
+        </li>
+        <li>
+          <button
+            className="flex items-center space-x-2 w-full text-left"
+            onClick={() => localStorage.removeItem("token")}
+          >
+            <LogOut size={20} /> <span>Logout</span>
+          </button>
         </li>
       </ul>
     </div>

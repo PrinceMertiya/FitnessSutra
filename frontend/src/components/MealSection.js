@@ -1,18 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import MealItem from "./MealItem";
 
-const MealSection = ({ title, meals }) => {
+const MealSection = () => {
+  const [meals, setMeals] = useState([]);
+
+  // Fetch meals from an API or mock data
+  useEffect(() => {
+    const fetchMeals = async () => {
+      const response = await fetch("/api/meals"); // Replace with actual API endpoint
+      const data = await response.json();
+      setMeals(data);
+    };
+
+    fetchMeals();
+  }, []);
+
   return (
-    <section className="mt-8">
-      <div className="p-6 bg-white rounded-md shadow-md">
-        <h2 className="text-xl font-bold mb-4">{title}</h2>
-        <ul>
-          {meals.map((meal, index) => (
-            <MealItem key={index} mealType={meal.mealType} mealDetails={meal.mealDetails} />
-          ))}
-        </ul>
-      </div>
-    </section>
+    <div className="bg-white p-4 shadow-md rounded-lg">
+      <h2 className="text-xl font-semibold mb-4">Meal Plan</h2>
+      {meals.length > 0 ? (
+        meals.map((meal, index) => <MealItem key={index} meal={meal} />)
+      ) : (
+        <p>No meals planned.</p>
+      )}
+    </div>
   );
 };
 

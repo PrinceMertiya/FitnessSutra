@@ -1,34 +1,42 @@
 import React, { useState } from "react";
 
-const BmiCalculator = ({ onResult }) => {
+const BmiCalculator = () => {
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
+  const [bmi, setBmi] = useState(null);
 
   const calculateBMI = () => {
     if (weight && height) {
-      const bmi = (weight / (height * height)).toFixed(2);
-      onResult(bmi);
+      const heightInMeters = height / 100;
+      const bmiValue = (weight / (heightInMeters * heightInMeters)).toFixed(2);
+      setBmi(bmiValue);
     }
   };
 
   return (
-    <div className="p-6 bg-white shadow-md rounded-md">
-      <h2 className="text-xl font-bold mb-4">BMI Calculator</h2>
+    <div className="p-4 bg-white shadow-md rounded-lg">
+      <h2 className="text-lg font-semibold mb-2">BMI Calculator</h2>
       <input
         type="number"
         placeholder="Weight (kg)"
+        className="border p-2 w-full mb-2"
         value={weight}
         onChange={(e) => setWeight(e.target.value)}
-        className="w-full p-2 mb-3 border rounded"
       />
       <input
         type="number"
-        placeholder="Height (m)"
+        placeholder="Height (cm)"
+        className="border p-2 w-full mb-2"
         value={height}
         onChange={(e) => setHeight(e.target.value)}
-        className="w-full p-2 mb-3 border rounded"
       />
-      <button onClick={calculateBMI} className="bg-blue-500 text-white px-4 py-2 rounded-md">Calculate</button>
+      <button
+        onClick={calculateBMI}
+        className="bg-blue-500 text-white px-4 py-2 rounded-md"
+      >
+        Calculate BMI
+      </button>
+      {bmi && <p className="mt-2">Your BMI: {bmi}</p>}
     </div>
   );
 };

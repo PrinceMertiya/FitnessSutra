@@ -1,11 +1,11 @@
 import React from "react";
 
-const MealItem = ({ mealType, mealDetails }) => {
+const MealItem = ({ meal }) => {
   return (
-    <li className="flex justify-between border-b py-2">
-      <span>{mealType}</span>
-      <span>{mealDetails}</span>
-    </li>
+    <div className="border-b p-2 flex justify-between">
+      <span>{meal.name}</span>
+      <span className="font-bold">{meal.calories} kcal</span>
+    </div>
   );
 };
 

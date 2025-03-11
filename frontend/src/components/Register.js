@@ -1,43 +1,33 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    console.log("Registering", name, email, password);
+    try {
+      await axios.post("http://localhost:5000/api/auth/register", { name, email, password });
+      navigate("/login");
+    } catch (err) {
+      setError("Registration failed. Try again.");
+    }
   };
 
   return (
-    <div className="p-6 max-w-md mx-auto">
-      <h2 className="text-xl font-bold mb-4">Register</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input 
-          type="text"
-          placeholder="Name"
-          className="w-full p-2 border rounded"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input 
-          type="email"
-          placeholder="Email"
-          className="w-full p-2 border rounded"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input 
-          type="password"
-          placeholder="Password"
-          className="w-full p-2 border rounded"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded">
-          Register
-        </button>
+    <div className="register-container">
+      <h2>Register</h2>
+      {error && <p className="error">{error}</p>}
+      <form onSubmit={handleRegister}>
+        <input type="text" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} required />
+        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <button type="submit">Register</button>
       </form>
     </div>
   );

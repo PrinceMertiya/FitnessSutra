@@ -1,20 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 
-const ProfileSection = ({ user }) => {
+const SettingsSection = () => {
+  const [theme, setTheme] = useState("light");
+
   return (
-    <section className="mt-8">
-      <div className="p-6 bg-white rounded-md shadow-md">
-        <h2 className="text-xl font-bold mb-4">Profile</h2>
-        <div className="flex items-center space-x-4">
-          <img src={user.avatar} alt="User Avatar" className="w-16 h-16 rounded-full" />
-          <div>
-            <h3 className="text-lg font-semibold">{user.name}</h3>
-            <p className="text-gray-600">{user.email}</p>
-          </div>
-        </div>
+    <div className="bg-white shadow-md rounded-lg p-4">
+      <h2 className="text-lg font-semibold mb-2">Settings</h2>
+      <div className="flex items-center space-x-4">
+        <label>Theme:</label>
+        <select
+          className="border p-2 rounded"
+          value={theme}
+          onChange={(e) => setTheme(e.target.value)}
+        >
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
       </div>
-    </section>
+    </div>
   );
 };
 
-export default ProfileSection;
+export default SettingsSection;

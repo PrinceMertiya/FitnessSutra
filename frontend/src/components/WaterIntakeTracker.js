@@ -1,13 +1,23 @@
 import React, { useState } from "react";
+import TrackerCard from "./TrackerCard";
 
 const WaterIntakeTracker = () => {
-  const [water, setWater] = useState(0);
+  const [waterIntake, setWaterIntake] = useState(0);
+
+  const handleAddWater = () => {
+    setWaterIntake((prev) => prev + 250);
+  };
 
   return (
-    <div className="p-6 bg-white shadow-md rounded-md">
-      <h2 className="text-xl font-bold mb-4">Water Intake</h2>
-      <p>{water} / 8 glasses</p>
-      <button onClick={() => setWater(water + 1)} className="bg-blue-500 text-white px-4 py-2 rounded-md">+1 Glass</button>
+    <div className="bg-white shadow-md rounded-lg p-4">
+      <h2 className="text-lg font-semibold mb-2">Water Intake</h2>
+      <TrackerCard title="Total Intake" value={waterIntake} unit="ml" />
+      <button
+        onClick={handleAddWater}
+        className="mt-3 bg-blue-500 text-white p-2 rounded"
+      >
+        Add 250ml
+      </button>
     </div>
   );
 };

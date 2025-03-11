@@ -1,17 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { getWorkouts } from "../api";
 
-const ExerciseTracker = ({ bmi }) => {
-  const getExercisePlan = () => {
-    if (bmi < 18.5) return "Weight Gain Plan: Strength Training + High-Calorie Diet";
-    if (bmi >= 18.5 && bmi <= 24.9) return "Maintain: Cardio + Strength Mix";
-    if (bmi >= 25) return "Weight Loss Plan: High Intensity Workouts + Caloric Deficit";
-    return "Enter your BMI to see the plan";
-  };
+const ExerciseTracker = () => {
+  const [workouts, setWorkouts] = useState([]);
+
+  useEffect(() => {
+    const fetchWorkouts = async () => {
+      const token = localStorage.getItem("token");
+      const { data } = await getWorkouts(token);
+      setWorkouts(data);
+    };
+    fetchWorkouts();
+  }, []);
 
   return (
-    <div className="p-6 bg-white shadow-md rounded-md">
-      <h2 className="text-xl font-bold mb-4">Exercise Regimen</h2>
-      <p className="text-lg">{getExercisePlan()}</p>
+    <div className="bg-white shadow-md rounded-lg p-4">
+      <h2 className="text-lg font-semibold mb-2">Exercise Log</h2>
+      <ul>
+        {workouts.map((workout, index) => (
+          <li key={index} className="border-b py-2">
+            {workout.type}: {workout.duration} mins
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

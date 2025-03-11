@@ -1,19 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-const ProfileSection = ({ user }) => {
+const ProfileSection = () => {
+  const [profile, setProfile] = useState({ name: "", age: "", weight: "", height: "" });
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const response = await fetch("/api/profile"); // Replace with actual API endpoint
+      const data = await response.json();
+      setProfile(data);
+    };
+
+    fetchProfile();
+  }, []);
+
   return (
-    <section className="mt-8">
-      <div className="p-6 bg-white rounded-md shadow-md">
-        <h2 className="text-xl font-bold mb-4">Profile</h2>
-        <div className="flex items-center space-x-4">
-          <img src={user.avatar} alt="User Avatar" className="w-16 h-16 rounded-full" />
-          <div>
-            <h3 className="text-lg font-semibold">{user.name}</h3>
-            <p className="text-gray-600">{user.email}</p>
-          </div>
-        </div>
-      </div>
-    </section>
+    <div className="bg-white p-4 shadow-md rounded-lg">
+      <h2 className="text-xl font-semibold mb-4">Profile</h2>
+      <p><strong>Name:</strong> {profile.name}</p>
+      <p><strong>Age:</strong> {profile.age}</p>
+      <p><strong>Weight:</strong> {profile.weight} kg</p>
+      <p><strong>Height:</strong> {profile.height} cm</p>
+    </div>
   );
 };
 

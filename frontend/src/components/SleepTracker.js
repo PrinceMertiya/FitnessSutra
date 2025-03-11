@@ -1,13 +1,19 @@
 import React, { useState } from "react";
+import TrackerCard from "./TrackerCard";
 
 const SleepTracker = () => {
-  const [hours, setHours] = useState(0);
+  const [sleepHours, setSleepHours] = useState(0);
 
   return (
-    <div className="p-6 bg-white shadow-md rounded-md">
-      <h2 className="text-xl font-bold mb-4">Sleep Tracker</h2>
-      <input type="number" value={hours} onChange={(e) => setHours(e.target.value)} className="w-full p-2 border rounded" placeholder="Hours Slept" />
-      <p className="mt-2">You slept {hours} hours last night.</p>
+    <div className="bg-white shadow-md rounded-lg p-4">
+      <h2 className="text-lg font-semibold mb-2">Sleep Tracker</h2>
+      <TrackerCard title="Sleep Hours" value={sleepHours} unit="hrs" />
+      <input
+        type="number"
+        className="border p-2 w-full mt-2"
+        placeholder="Enter hours"
+        onChange={(e) => setSleepHours(e.target.value)}
+      />
     </div>
   );
 };
